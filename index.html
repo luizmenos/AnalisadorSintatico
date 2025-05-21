@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisador de Sei-la oq Top-Down</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="css/fixedColumns.bootstrap5.min.css">
+    <link rel="stylesheet" href="css/fixedHeader.bootstrap5.min.css">
+    <link rel="stylesheet" href="css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 d-flex">
+                <div class="card flex-grow-1">
+                    <div class="card-header">
+                        <h5 class="card-title text-secondary-emphasis fw-bold">Gramática</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">S::= aAb | bBc | cCd</li>
+                            <li class="list-group-item">A::= aDa | bAb</li>
+                            <li class="list-group-item">B::= bCD | &epsilon;</li>
+                            <li class="list-group-item">C::= cAB | aDb</li>
+                            <li class="list-group-item">D::= dSa | cBd</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-3 d-flex">
+                <div class="card flex-grow-1">
+                    <div class="card-header">
+                        <h5 class="card-title text-secondary-emphasis fw-bold"> First / Follow</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row w-100">
+                            <div class="col-md-6">
+                                <div class="list-group">
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between border-bottom mb-1">
+                                            <h5 class="mb-1">First</h5>
+                                        </div>
+                                        <p class="mb-1">S = a, b, c</p>
+                                        <p class="mb-1">A = a, b</p>
+                                        <p class="mb-1">B = b, &epsilon;</p>
+                                        <p class="mb-1">C = a, c</p>
+                                        <p class="mb-1">D = c, d</p>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="list-group">
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between border-bottom mb-1">
+                                            <h5 class="mb-1">Follow</h5>
+                                        </div>
+                                        <p class="mb-1">S = $, a</p>
+                                        <p class="mb-1">A = b, c, d</p>
+                                        <p class="mb-1">B = c, d</p>
+                                        <p class="mb-1">C = c, d</p>
+                                        <p class="mb-1">D = a, b</p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title text-secondary-emphasis fw-bold">Tabela de Parsing</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped text-center">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>a</th>
+                                        <th>b</th>
+                                        <th>c</th>
+                                        <th>d</th>
+                                        <th>$</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>S</td>
+                                        <td>S -> aAb</td>
+                                        <td>S -> bBc</td>
+                                        <td>S -> cCd</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>A</td>
+                                        <td>A -> aDa</td>
+                                        <td>A -> bAb</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>B</td>
+                                        <td>-</td>
+                                        <td>B -> bCD</td>
+                                        <td>B -> &epsilon;</td>
+                                        <td>B -> &epsilon;</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>C</td>
+                                        <td>C -> aDb</td>
+                                        <td>-</td>
+                                        <td>C -> cAB</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>D</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>D -> cBd</td>
+                                        <td>D -> dSa</td>
+                                        <td>-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/dataTables.min.js"></script>
+    <script src="js/dataTables.bootstrap5.min.js"></script>
+    <script src="js/dataTables.fixedHeader.min.js"></script>
+    <script src="js/fixedHeader.bootstrap5.min.js"></script>
+</body>
+
+</html>
