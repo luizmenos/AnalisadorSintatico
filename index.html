@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análisador de Sei-la oq Top-Down</title>
+    <title>Análisador Sintático Top-Down</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="css/fixedColumns.bootstrap5.min.css">
@@ -99,16 +99,16 @@
                                 <tbody>
                                     <tr>
                                         <td>S</td>
-                                        <td>S -> aAb</td>
-                                        <td>S -> bBc</td>
-                                        <td>S -> cCd</td>
+                                        <td onclick="desenvolveCaminho('S', 'aAb', 'a')">S -> aAb</td>
+                                        <td onclick="desenvolveCaminho('S', 'bBc', 'b')">S -> bBc</td>
+                                        <td onclick="desenvolveCaminho('S', 'cCd', 'c')">S -> cCd</td>
                                         <td>-</td>
                                         <td>-</td>
                                     </tr>
                                     <tr>
                                         <td>A</td>
-                                        <td>A -> aDa</td>
-                                        <td>A -> bAb</td>
+                                        <td onclick="desenvolveCaminho('A', 'aDa', 'a')">A -> aDa</td>
+                                        <td onclick="desenvolveCaminho('A', 'bAb', 'b')">A -> bAb</td>
                                         <td>-</td>
                                         <td>-</td>
                                         <td>-</td>
@@ -116,16 +116,16 @@
                                     <tr>
                                         <td>B</td>
                                         <td>-</td>
-                                        <td>B -> bCD</td>
-                                        <td>B -> &epsilon;</td>
-                                        <td>B -> &epsilon;</td>
+                                        <td onclick="desenvolveCaminho('B', 'bCD', 'b')">B -> bCD</td>
+                                        <td onclick="desenvolveCaminho('B', '', 'c')">B -> &epsilon;</td>
+                                        <td onclick="desenvolveCaminho('B', '', 'd')">B -> &epsilon;</td>
                                         <td>-</td>
                                     </tr>
                                     <tr>
                                         <td>C</td>
-                                        <td>C -> aDb</td>
+                                        <td onclick="desenvolveCaminho('C', 'aDb', 'a')">C -> aDb</td>
                                         <td>-</td>
-                                        <td>C -> cAB</td>
+                                        <td onclick="desenvolveCaminho('C', 'cAB', 'c')">C -> cAB</td>
                                         <td>-</td>
                                         <td>-</td>
                                     </tr>
@@ -133,8 +133,8 @@
                                         <td>D</td>
                                         <td>-</td>
                                         <td>-</td>
-                                        <td>D -> cBd</td>
-                                        <td>D -> dSa</td>
+                                        <td onclick="desenvolveCaminho('D', 'cBd', 'c')">D -> cBd</td>
+                                        <td onclick="desenvolveCaminho('D', 'dSa', 'd')">D -> dSa</td>
                                         <td>-</td>
                                     </tr>
                                 </tbody>
@@ -145,6 +145,32 @@
 
             </div>
         </div>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Sentença</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <label for="sentenca">Sentença</label>
+                                <input type="text" id="sentenca" name="sentenca" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" onclick="gerarSentenca()" class="btn btn-primary">Sentença
+                                    Aleatória<br>
+                                    <small>
+                                        (3 a 10 caractéres)
+                                    </small>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 
@@ -153,6 +179,47 @@
     <script src="js/dataTables.bootstrap5.min.js"></script>
     <script src="js/dataTables.fixedHeader.min.js"></script>
     <script src="js/fixedHeader.bootstrap5.min.js"></script>
+
+    <script>
+        let parsing = {
+            'S': {
+                'a': ['aAb'],
+                'b': ['bBc'],
+                'c': ['cCd']
+            },
+            'A': {
+                'a': ['aDa'],
+                'b': ['bAb']
+            },
+            'B': {
+                'b': ['bCD'],
+                'c': [''],
+                'd': ['']
+            },
+            'C': {
+                'a': ['aDb'],
+                'c': ['cAB']
+            },
+            'D': {
+                'c': ['cBd'],
+                'd': ['dSa']
+            },
+        };
+
+        let alfabeto = ['a', 'b', 'c', 'd'];
+        let tamAlfabeto = alfabeto.length;
+
+        gerarSentenca = () => {
+            
+            let tam = Math.floor(Math.random() * 8) + 3;
+            let sentenca = "";
+            while (tam--) {
+                sentenca += alfabeto[Math.floor(Math.random() * tamAlfabeto)];
+            }
+
+            $('#sentenca').val(sentenca);
+        }
+    </script>
 </body>
 
 </html>
