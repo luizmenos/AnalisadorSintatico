@@ -18,133 +18,160 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3 d-flex">
-                <div class="card flex-grow-1">
-                    <div class="card-header">
-                        <h5 class="card-title text-secondary-emphasis fw-bold">Gramática</h5>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">S::= aAb | bBc | cCd</li>
-                            <li class="list-group-item">A::= aDa | bAb</li>
-                            <li class="list-group-item">B::= bCD | &epsilon;</li>
-                            <li class="list-group-item">C::= cAB | aDb</li>
-                            <li class="list-group-item">D::= dSa | cBd</li>
-                        </ul>
+            <div class="col-md-3">
+                <div class="accordion" id="accordionGramatica">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingGramatica">
+                            <button class="accordion-button collapsed fw-bold text-secondary-emphasis" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseGramatica" aria-expanded="false"
+                                aria-controls="collapseGramatica">
+                                Gramática
+                            </button>
+                        </h2>
+                        <div id="collapseGramatica" class="accordion-collapse collapse"
+                            aria-labelledby="headingGramatica" data-bs-parent="#accordionGramatica">
+                            <div class="accordion-body">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">S::= aAb | bBc | cCd</li>
+                                    <li class="list-group-item">A::= aDa | bAb</li>
+                                    <li class="list-group-item">B::= bCD | &epsilon;</li>
+                                    <li class="list-group-item">C::= cAB | aDb</li>
+                                    <li class="list-group-item">D::= dSa | cBd</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
             </div>
-            <div class="col-md-3 d-flex">
-                <div class="card flex-grow-1">
-                    <div class="card-header">
-                        <h5 class="card-title text-secondary-emphasis fw-bold"> First / Follow</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row w-100">
-                            <div class="col-md-6">
-                                <div class="list-group">
-                                    <div class="list-group-item">
-                                        <div class="d-flex w-100 justify-content-between border-bottom mb-1">
-                                            <h5 class="mb-1">First</h5>
+
+            <div class="col-md-3">
+                <div class="accordion" id="accordionFirstFollow">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingFirstFollow">
+                            <button class="accordion-button collapsed fw-bold text-secondary-emphasis" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseFirstFollow" aria-expanded="false"
+                                aria-controls="collapseFirstFollow">
+                                First / Follow
+                            </button>
+                        </h2>
+                        <div id="collapseFirstFollow" class="accordion-collapse collapse"
+                            aria-labelledby="headingFirstFollow" data-bs-parent="#accordionFirstFollow">
+                            <div class="accordion-body">
+                                <div class="row w-100">
+                                    <div class="col-md-6">
+                                        <div class="list-group">
+                                            <div class="list-group-item">
+                                                <div class="d-flex w-100 justify-content-between border-bottom mb-1">
+                                                    <h5 class="mb-1">First</h5>
+                                                </div>
+                                                <p class="mb-1">S = a, b, c</p>
+                                                <p class="mb-1">A = a, b</p>
+                                                <p class="mb-1">B = b, &epsilon;</p>
+                                                <p class="mb-1">C = a, c</p>
+                                                <p class="mb-1">D = c, d</p>
+
+                                            </div>
                                         </div>
-                                        <p class="mb-1">S = a, b, c</p>
-                                        <p class="mb-1">A = a, b</p>
-                                        <p class="mb-1">B = b, &epsilon;</p>
-                                        <p class="mb-1">C = a, c</p>
-                                        <p class="mb-1">D = c, d</p>
 
                                     </div>
-                                </div>
+                                    <div class="col-md-6">
+                                        <div class="list-group">
+                                            <div class="list-group-item">
+                                                <div class="d-flex w-100 justify-content-between border-bottom mb-1">
+                                                    <h5 class="mb-1">Follow</h5>
+                                                </div>
+                                                <p class="mb-1">S = $, a</p>
+                                                <p class="mb-1">A = b, c, d</p>
+                                                <p class="mb-1">B = c, d</p>
+                                                <p class="mb-1">C = c, d</p>
+                                                <p class="mb-1">D = a, b</p>
 
-                            </div>
-                            <div class="col-md-6">
-                                <div class="list-group">
-                                    <div class="list-group-item">
-                                        <div class="d-flex w-100 justify-content-between border-bottom mb-1">
-                                            <h5 class="mb-1">Follow</h5>
+                                            </div>
                                         </div>
-                                        <p class="mb-1">S = $, a</p>
-                                        <p class="mb-1">A = b, c, d</p>
-                                        <p class="mb-1">B = c, d</p>
-                                        <p class="mb-1">C = c, d</p>
-                                        <p class="mb-1">D = a, b</p>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
+
             <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title text-secondary-emphasis fw-bold">Tabela de Parsing</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-striped text-center">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>a</th>
-                                        <th>b</th>
-                                        <th>c</th>
-                                        <th>d</th>
-                                        <th>$</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>S</td>
-                                        <td onclick="desenvolveCaminho('S', 'aAb', 'a')">S -> aAb</td>
-                                        <td onclick="desenvolveCaminho('S', 'bBc', 'b')">S -> bBc</td>
-                                        <td onclick="desenvolveCaminho('S', 'cCd', 'c')">S -> cCd</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>A</td>
-                                        <td onclick="desenvolveCaminho('A', 'aDa', 'a')">A -> aDa</td>
-                                        <td onclick="desenvolveCaminho('A', 'bAb', 'b')">A -> bAb</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>B</td>
-                                        <td>-</td>
-                                        <td onclick="desenvolveCaminho('B', 'bCD', 'b')">B -> bCD</td>
-                                        <td onclick="desenvolveCaminho('B', '', 'c')">B -> &epsilon;</td>
-                                        <td onclick="desenvolveCaminho('B', '', 'd')">B -> &epsilon;</td>
-                                        <td>-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>C</td>
-                                        <td onclick="desenvolveCaminho('C', 'aDb', 'a')">C -> aDb</td>
-                                        <td>-</td>
-                                        <td onclick="desenvolveCaminho('C', 'cAB', 'c')">C -> cAB</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>D</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td onclick="desenvolveCaminho('D', 'cBd', 'c')">D -> cBd</td>
-                                        <td onclick="desenvolveCaminho('D', 'dSa', 'd')">D -> dSa</td>
-                                        <td>-</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                <div class="accordion" id="accordionTabelaParsing">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTabelaParsing">
+                            <button class="accordion-button collapsed fw-bold text-secondary-emphasis" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseTabelaParsing" aria-expanded="false"
+                                aria-controls="collapseTabelaParsing">
+                                Tabela de Parsing
+                            </button>
+                        </h2>
+                        <div id="collapseTabelaParsing" class="accordion-collapse collapse"
+                            aria-labelledby="headingTabelaParsing" data-bs-parent="#accordionTabelaParsing">
+                            <div class="accordion-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover table-striped text-center">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>a</th>
+                                                <th>b</th>
+                                                <th>c</th>
+                                                <th>d</th>
+                                                <th>$</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>S</td>
+                                                <td onclick="desenvolveCaminho('S', 'aAb', 'a')">S -> aAb</td>
+                                                <td onclick="desenvolveCaminho('S', 'bBc', 'b')">S -> bBc</td>
+                                                <td onclick="desenvolveCaminho('S', 'cCd', 'c')">S -> cCd</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                            </tr>
+                                            <tr>
+                                                <td>A</td>
+                                                <td onclick="desenvolveCaminho('A', 'aDa', 'a')">A -> aDa</td>
+                                                <td onclick="desenvolveCaminho('A', 'bAb', 'b')">A -> bAb</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                            </tr>
+                                            <tr>
+                                                <td>B</td>
+                                                <td>-</td>
+                                                <td onclick="desenvolveCaminho('B', 'bCD', 'b')">B -> bCD</td>
+                                                <td onclick="desenvolveCaminho('B', '', 'c')">B -> &epsilon;</td>
+                                                <td onclick="desenvolveCaminho('B', '', 'd')">B -> &epsilon;</td>
+                                                <td>-</td>
+                                            </tr>
+                                            <tr>
+                                                <td>C</td>
+                                                <td onclick="desenvolveCaminho('C', 'aDb', 'a')">C -> aDb</td>
+                                                <td>-</td>
+                                                <td onclick="desenvolveCaminho('C', 'cAB', 'c')">C -> cAB</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                            </tr>
+                                            <tr>
+                                                <td>D</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td onclick="desenvolveCaminho('D', 'cBd', 'c')">D -> cBd</td>
+                                                <td onclick="desenvolveCaminho('D', 'dSa', 'd')">D -> dSa</td>
+                                                <td>-</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
+
         <div class="row mt-4">
             <div class="col-md-6">
                 <div class="card">
@@ -157,24 +184,38 @@
                                 <label for="sentenca">Sentença</label>
                                 <input type="text" id="sentenca" name="sentenca" class="form-control">
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 d-flex align-items-end">
                                 <button type="button" onclick="gerarSentenca()" class="btn btn-primary">Sentença
-                                    Aleatória<br>
-                                    <small>
-                                        (3 a 10 caractéres)
-                                    </small>
-                                </button>
+                                    Aleatória </button>
                             </div>
                         </div>
 
                     </div>
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="card" id="validationCard">
+                    <div class="card-header">
+                        <h5 class="card-title">Validação</h5>
+                    </div>
+                    <div class="card-body">
+                        <button type="button" class="btn btn-primary" disabled>Direta</button>
+                        <button type="button" class="btn btn-secondary" disabled>Passo a Passo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div id="passos"></div>
+            </div>
         </div>
     </div>
 
 
     <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/dataTables.min.js"></script>
     <script src="js/dataTables.bootstrap5.min.js"></script>
     <script src="js/dataTables.fixedHeader.min.js"></script>
@@ -207,17 +248,56 @@
         };
 
         let alfabeto = ['a', 'b', 'c', 'd'];
-        let tamAlfabeto = alfabeto.length;
+        let historicoDefinitivo = [];
 
         gerarSentenca = () => {
-            
-            let tam = Math.floor(Math.random() * 8) + 3;
-            let sentenca = "";
-            while (tam--) {
-                sentenca += alfabeto[Math.floor(Math.random() * tamAlfabeto)];
+            let sentencaValida = "";
+
+            while (true) {
+                let sentenca = "";
+                let pilha = ['S'];
+                let pilhaValida = true;
+                let historico = [];
+
+                while (pilha.length > 0) {
+                    let simboloAtual = pilha.pop();
+
+                    if (alfabeto.includes(simboloAtual)) {
+                        sentenca += simboloAtual;
+
+                        if (sentenca.length > 20) {
+                            pilhaValida = false;
+                            break;
+                        }
+
+                    } else if (parsing[simboloAtual]) {
+                        let producoes = Object.values(parsing[simboloAtual]).flat();
+                        let producaoEscolhida = producoes[Math.floor(Math.random() * producoes.length)];
+
+                        historico.push({
+                            simbolo: simboloAtual,
+                            producao: producaoEscolhida,
+                            pilhaAntes: [...pilha]
+                        });
+
+                        for (let i = producaoEscolhida.length - 1; i >= 0; i--) {
+                            pilha.push(producaoEscolhida[i]);
+                        }
+                        historico[historico.length - 1].pilhaDepois = [...pilha];
+                    }
+                }
+
+                if (pilhaValida && sentenca.length <= 20) {
+                    sentencaValida = sentenca;
+                    historicoDefinitivo = historico;
+                    break;
+                }
             }
 
-            $('#sentenca').val(sentenca);
+            $('#sentenca').val(sentencaValida);
+            $('#validationCard button').attr('disabled', false);
+
+            console.log(historicoDefinitivo);
         }
     </script>
 </body>
