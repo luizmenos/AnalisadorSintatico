@@ -199,8 +199,10 @@
                         <h5 class="card-title">Validação</h5>
                     </div>
                     <div class="card-body">
-                        <button type="button" class="btn btn-primary" disabled>Direta</button>
-                        <button type="button" class="btn btn-secondary" disabled>Passo a Passo</button>
+                        <button type="button" class="btn btn-primary" onclick="validacao('direta')"
+                            disabled>Direta</button>
+                        <button type="button" class="btn btn-secondary" onclick="validacao('passo')" disabled>Passo a
+                            Passo</button>
                     </div>
                 </div>
             </div>
@@ -208,7 +210,28 @@
 
         <div class="row mt-4">
             <div class="col-md-12">
-                <div id="passos"></div>
+                <div class="card">
+                    <div class="card-header">
+                        Tabela de Validação
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-hover table-bordered table-striped" id="tabelaValidacao">
+                            <thead>
+                                <tr>
+                                    <th>Pilha</th>
+                                    <th>Entrada</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer text-end d-none" id="footerPasso">
+                        <button class="btn btn-success" onclick="proximoPasso()">Próximo Passo</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -220,7 +243,7 @@
     <script src="js/dataTables.bootstrap5.min.js"></script>
     <script src="js/dataTables.fixedHeader.min.js"></script>
     <script src="js/fixedHeader.bootstrap5.min.js"></script>
-
+    <script src="js/sweetalert2.all.min.js"></script>
     <script>
         let parsing = {
             'S': {
@@ -245,6 +268,9 @@
                 'c': ['cBd'],
                 'd': ['dSa']
             },
+            '$': {
+                '$': ''
+            }
         };
 
         let alfabeto = ['a', 'b', 'c', 'd'];
@@ -255,35 +281,44 @@
 
             while (true) {
                 let sentenca = "";
-                let pilha = ['S'];
+                let pilha = ['$', 'S'];
                 let pilhaValida = true;
                 let historico = [];
+                let producaoEscolhida = '';
+                let iteracoes = 0;
+                let entrada = [];
 
                 while (pilha.length > 0) {
+                    iteracoes++;
+                    historico.push({
+                        pilhaAntes: [...pilha]
+                    });
                     let simboloAtual = pilha.pop();
+                    historico[historico.length - 1].simbolo = simboloAtual;
 
                     if (alfabeto.includes(simboloAtual)) {
                         sentenca += simboloAtual;
+                        producaoEscolhida = 'ler ' + simboloAtual;
 
                         if (sentenca.length > 20) {
                             pilhaValida = false;
                             break;
                         }
-
                     } else if (parsing[simboloAtual]) {
                         let producoes = Object.values(parsing[simboloAtual]).flat();
-                        let producaoEscolhida = producoes[Math.floor(Math.random() * producoes.length)];
-
-                        historico.push({
-                            simbolo: simboloAtual,
-                            producao: producaoEscolhida,
-                            pilhaAntes: [...pilha]
-                        });
+                        producaoEscolhida = producoes[Math.floor(Math.random() * producoes.length)];
 
                         for (let i = producaoEscolhida.length - 1; i >= 0; i--) {
                             pilha.push(producaoEscolhida[i]);
                         }
-                        historico[historico.length - 1].pilhaDepois = [...pilha];
+                    }
+
+                    historico[historico.length - 1].producao = producaoEscolhida;
+                    historico[historico.length - 1].pilhaDepois = [...pilha];
+
+                    if (historico[historico.length - 1].pilhaAntes.length == 1 && historico[historico.length - 1].pilhaAntes[0] == '$' && simboloAtual == '$') {
+                        historico[historico.length - 1].producao = "Aceito em " + iteracoes;
+                        break;
                     }
                 }
 
@@ -297,7 +332,76 @@
             $('#sentenca').val(sentencaValida);
             $('#validationCard button').attr('disabled', false);
 
+            let minhaSentenca = sentencaValida + '$';
+            minhaSentenca = minhaSentenca.split("");
+            historicoDefinitivo.forEach((linha) => {
+
+                linha.entrada = [...minhaSentenca];
+                if (linha.producao.includes('ler')) {
+                    minhaSentenca.shift();
+                }
+            });
+
             console.log(historicoDefinitivo);
+        }
+
+        const tabela = new DataTable('#tabelaValidacao', {
+            fixedHeader: true,
+            paging: false,
+            searching: false,
+            ordering: false,
+            info: false,
+            lengthChange: false,
+            scrollX: false
+        });
+        let historicoCopia = historicoDefinitivo;
+        validacao = (tipo) => {
+            if (!$('#footerPasso').hasClass('d-none')) {
+                $('#footerPasso').addClass('d-none');
+            }
+            tabela.clear().draw();
+            if (historicoDefinitivo.length == 0) {
+                Swal.fire('', 'Deu creps na sentença!', 'error');
+                return false;
+            }
+
+            if (tipo == 'passo') {
+                if ($('#footerPasso').hasClass('d-none')) {
+                    $('#footerPasso').removeClass('d-none');
+                }
+                proximoPasso();
+            } else if (tipo == 'direta') {
+                historicoDefinitivo.forEach((linhaHist, index) => {
+                    let linha = tabela.row.add([
+                        linhaHist.pilhaAntes.join(""),
+                        linhaHist.entrada.join(""),
+                        linhaHist.producao.includes('ler') || linhaHist.simbolo == '$'
+                            ? (linhaHist.producao === '' ? '&epsilon;' : linhaHist.producao)
+                            : linhaHist.simbolo + ' -> ' + (linhaHist.producao === '' ? '&epsilon;' : linhaHist.producao)
+                    ]).draw(false);
+                    if (index === historicoDefinitivo.length - 1) {
+                        $(tabela.row(':last').node()).addClass('table-success text-white');
+                        $(tabela.row(':last').node())
+                            .find('td')
+                            .each(function () {
+
+                                $(this).addClass('text-success-emphasis fw-bold');
+                            });
+                    }
+                });
+
+            }
+        }
+
+        proximoPasso = () => {
+            let passo = historicoCopia.shift();
+            tabela.row.add([
+                passo.pilhaAntes.join(""),
+                passo.entrada.join(""),
+                passo.producao.includes('ler') || passo.simbolo == '$'
+                    ? (passo.producao === '' ? '&epsilon;' : passo.producao)
+                    : passo.simbolo + ' -> ' + (passo.producao === '' ? '&epsilon;' : passo.producao)
+            ]).draw(false);
         }
     </script>
 </body>
