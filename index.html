@@ -122,15 +122,18 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>S</td>
-                                                <td onclick="desenvolveCaminho('S', 'aAb', 'a')">S -> aAb</td>
-                                                <td onclick="desenvolveCaminho('S', 'bBc', 'b')">S -> bBc</td>
-                                                <td onclick="desenvolveCaminho('S', 'cCd', 'c')">S -> cCd</td>
-                                                <td>-</td>
-                                                <td>-</td>
+                                            <tr id="regra-S" class="table-info border-info">
+                                                <td class="text-info-emphasis">S</td>
+                                                <td class="text-info-emphasis"
+                                                    onclick="desenvolveCaminho('S', 'aAb', 'a')">S -> aAb</td>
+                                                <td class="text-info-emphasis"
+                                                    onclick="desenvolveCaminho('S', 'bBc', 'b')">S -> bBc</td>
+                                                <td class="text-info-emphasis"
+                                                    onclick="desenvolveCaminho('S', 'cCd', 'c')">S -> cCd</td>
+                                                <td class="text-info-emphasis">-</td>
+                                                <td class="text-info-emphasis">-</td>
                                             </tr>
-                                            <tr>
+                                            <tr id="regra-A">
                                                 <td>A</td>
                                                 <td onclick="desenvolveCaminho('A', 'aDa', 'a')">A -> aDa</td>
                                                 <td onclick="desenvolveCaminho('A', 'bAb', 'b')">A -> bAb</td>
@@ -138,7 +141,7 @@
                                                 <td>-</td>
                                                 <td>-</td>
                                             </tr>
-                                            <tr>
+                                            <tr id="regra-B">
                                                 <td>B</td>
                                                 <td>-</td>
                                                 <td onclick="desenvolveCaminho('B', 'bCD', 'b')">B -> bCD</td>
@@ -146,7 +149,7 @@
                                                 <td onclick="desenvolveCaminho('B', '', 'd')">B -> &epsilon;</td>
                                                 <td>-</td>
                                             </tr>
-                                            <tr>
+                                            <tr id="regra-C">
                                                 <td>C</td>
                                                 <td onclick="desenvolveCaminho('C', 'aDb', 'a')">C -> aDb</td>
                                                 <td>-</td>
@@ -154,7 +157,7 @@
                                                 <td>-</td>
                                                 <td>-</td>
                                             </tr>
-                                            <tr>
+                                            <tr id="regra-D">
                                                 <td>D</td>
                                                 <td>-</td>
                                                 <td>-</td>
@@ -164,6 +167,13 @@
                                             </tr>
                                         </tbody>
                                     </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button class="btn btn-info" disabled id="restauraDeriv"
+                                            onclick="restauraTabela()">Resetar
+                                            Derivações</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -182,7 +192,8 @@
                         <div class="row">
                             <div class="col-md-9">
                                 <label for="sentenca">Sentença</label>
-                                <input type="text" id="sentenca" name="sentenca" class="form-control">
+                                <input type="text" id="sentenca" name="sentenca" onblur="validarSentenca(this.value)"
+                                    class="form-control">
                             </div>
                             <div class="col-md-3 d-flex align-items-end">
                                 <button type="button" onclick="gerarSentenca()" class="btn btn-primary">Sentença
@@ -354,16 +365,20 @@
             lengthChange: false,
             scrollX: false
         });
-        let historicoCopia = historicoDefinitivo;
+
+        let historicoCopia;
+        let deubom = true;
+
         validacao = (tipo) => {
             if (!$('#footerPasso').hasClass('d-none')) {
                 $('#footerPasso').addClass('d-none');
             }
+
             tabela.clear().draw();
-            if (historicoDefinitivo.length == 0) {
-                Swal.fire('', 'Deu creps na sentença!', 'error');
-                return false;
-            }
+
+            deubom = validarSentenca($('#sentenca').val());
+
+            historicoCopia = historicoDefinitivo;
 
             if (tipo == 'passo') {
                 if ($('#footerPasso').hasClass('d-none')) {
@@ -380,13 +395,21 @@
                             : linhaHist.simbolo + ' -> ' + (linhaHist.producao === '' ? '&epsilon;' : linhaHist.producao)
                     ]).draw(false);
                     if (index === historicoDefinitivo.length - 1) {
-                        $(tabela.row(':last').node()).addClass('table-success text-white');
-                        $(tabela.row(':last').node())
-                            .find('td')
-                            .each(function () {
-
-                                $(this).addClass('text-success-emphasis fw-bold');
-                            });
+                        if (deubom) {
+                            $(tabela.row(':last').node()).addClass('table-success');
+                            $(tabela.row(':last').node())
+                                .find('td')
+                                .each(function () {
+                                    $(this).addClass('text-success-emphasis fw-bold');
+                                });
+                        } else {
+                            $(tabela.row(':last').node()).addClass('table-danger');
+                            $(tabela.row(':last').node())
+                                .find('td')
+                                .each(function () {
+                                    $(this).addClass('text-danger-emphasis fw-bold');
+                                });
+                        }
                     }
                 });
 
@@ -402,6 +425,213 @@
                     ? (passo.producao === '' ? '&epsilon;' : passo.producao)
                     : passo.simbolo + ' -> ' + (passo.producao === '' ? '&epsilon;' : passo.producao)
             ]).draw(false);
+
+            if (historicoCopia.length == 0) {
+                if (deubom) {
+                    $(tabela.row(':last').node()).addClass('table-success');
+                    $(tabela.row(':last').node())
+                        .find('td')
+                        .each(function () {
+                            $(this).addClass('text-success-emphasis fw-bold');
+                        });
+                } else {
+                    $(tabela.row(':last').node()).addClass('table-danger');
+                    $(tabela.row(':last').node())
+                        .find('td')
+                        .each(function () {
+                            $(this).addClass('text-danger-emphasis fw-bold');
+                        });
+                }
+            }
+        }
+
+        validarSentenca = (sentenca) => {
+            if (historicoDefinitivo.length > 0) historicoDefinitivo = [];
+            let pilha = ['$', 'S'];
+            let entrada = sentenca.split("");
+            entrada.push('$');
+            let historico = [];
+            let iteracoes = 0;
+
+            while (pilha.length > 0) {
+                iteracoes++;
+
+                let simboloPilha = pilha.pop();
+                let simboloEntrada = entrada[0];
+
+                let linhaHistorico = {
+                    pilhaAntes: [...pilha, simboloPilha],
+                    simbolo: simboloPilha,
+                    entrada: [...entrada],
+                    producao: '',
+                    pilhaDepois: null
+                };
+                // console.log(simboloPilha);
+                if (alfabeto.includes(simboloPilha)) {
+                    if (simboloPilha === simboloEntrada) {
+                        entrada.shift();
+                        linhaHistorico.producao = 'ler ' + simboloPilha;
+                    } else {
+                        linhaHistorico.producao = `Erro em: ${iteracoes}`;
+                        historico.push(linhaHistorico);
+                        // console.log(historico);
+                        break;
+                        //  Swal.fire("", "Sentença inválida 1", "error");
+                        // return false;
+                    }
+                }
+                else if (parsing[simboloPilha]) {
+                    const producoes = parsing[simboloPilha][simboloEntrada];
+                    const producao = Array.isArray(producoes) ? producoes[0] : producoes;
+
+                    if (producao == null || producao == undefined) {
+                        linhaHistorico.producao = `Erro em: ${iteracoes}`;
+                        historico.push(linhaHistorico);
+                        // console.log(historico);
+                        break;
+                        //  Swal.fire("", "Sentença inválida 2", "error");
+                        // return false;
+                    }
+
+                    linhaHistorico.producao = producao;
+                    producao.split("").reverse().forEach(s => {
+                        if (s !== '') pilha.push(s);
+                    });
+                } else {
+                    linhaHistorico.producao = `Erro em: ${iteracoes}`;
+                    historico.push(linhaHistorico);
+                    break;
+                    // console.log(historico);
+                    //  Swal.fire("", "Sentença inválida 3", "error");
+                    // return false;
+                }
+                if (simboloPilha === '$' && simboloEntrada === '$') {
+                    linhaHistorico.producao = "Aceito em " + iteracoes;
+
+                    // console.log(historico);
+                    //  Swal.fire("", "Sentença válida", "success");
+
+                }
+                linhaHistorico.pilhaDepois = [...pilha];
+                historico.push(linhaHistorico);
+                // if (simboloPilha === '$' && simboloEntrada === '$') {
+                //     return true;
+                // }
+            }
+            historicoDefinitivo = historico;
+            $('#validationCard button').attr('disabled', false);
+
+            if (historico[historico.length - 1].producao.includes('Erro')) {
+                // console.log('aqui');
+                return false;
+            } else if (historico[historico.length - 1].producao.includes('Aceito')) {
+                // console.log('aca');
+                return true;
+            }
+            Swal.fire("", "Sentença inválida fim", "error");
+            return false;
+        };
+
+        let pilha = ['$', 'S'];
+        let sentenca = "";
+        let temErro = false;
+        atualizaTela = () => {
+            $('#sentenca').val(sentenca);
+            validarSentenca(sentenca);
+        }
+
+        desenvolveCaminho = (regra, producao, terminal) => {
+
+            const simboloTopo = pilha.pop();
+
+            console.log(typeof simboloTopo);
+            if (typeof simboloTopo === "undefined") {
+                Swal.fire('A sentença possui erros ou está completa', 'Você pode realizar a validação da mesma para verificar onde ocorreu o erro, ou resetar as derivações clicando em "Resetar Derivações"', "info");
+                return;
+            }
+
+            if (simboloTopo == undefined || simboloTopo == '$') {
+                Swal.fire('', 'Clique em "Resetar Derivações" para poder derivar novamente', "info");
+                return;
+            }
+
+            if (simboloTopo !== regra) {
+                if (!parsing[simboloTopo] || !parsing[simboloTopo][terminal]) {
+                    Swal.fire("Erro na derivação", `Não há produção válida para o topo da pilha '${simboloTopo}' com o terminal '${terminal}'. A sentença não pode ser mais derivada.`, 'error');
+                    pilha.push(simboloTopo);
+
+                    return;
+                }
+                if (typeof alfabeto[simboloTopo] !== "undefined") {
+                    Swal.fire("", `Erro: não é mais possível derivar, pois o topo da pilha é o terminal ${simboloTopo}`, "error");
+
+                } else {
+                    Swal.fire("", `Aviso: topo da pilha é '${simboloTopo}', esperado '${regra}'`, "warning");
+                }
+                pilha.push(simboloTopo);
+                return;
+            }
+
+
+
+
+            for (let i = producao.length - 1; i >= 0; i--) {
+                let simbolo = producao[i];
+                if (simbolo !== '') pilha.push(simbolo);
+            }
+
+            if (pilha.length && pilha[pilha.length - 1] === terminal) {
+                sentenca += terminal;
+                pilha.pop();
+            }
+
+            $('#restauraDeriv').removeAttr('disabled');
+            atualizaTela();
+            destacarProximaRegra();
+        }
+
+        destacarProximaRegra = () => {
+            document.querySelectorAll('tr[id^="regra-"]').forEach(tr => {
+                tr.classList.remove('table-info');
+                tr.classList.remove('border-info');
+            });
+
+            document.querySelectorAll('tr[id^="regra-"] td').forEach(td => {
+                td.classList.remove('text-info-emphasis');
+            });
+
+            const simbolo = pilha[pilha.length - 1];
+            if (typeof parsing[simbolo] !== 'undefined') {
+                const linha = document.getElementById('regra-' + simbolo);
+                if (linha) {
+                    linha.classList.add('table-info');
+                    linha.classList.add('border-info');
+                    $(linha).find('td').each(function () {
+                        $(this).addClass('text-info-emphasis');
+                    });
+                }
+            }
+            return;
+
+        }
+
+        restauraTabela = () => {
+            $('#restauraDeriv').attr('disabled', true);
+
+            pilha = ['$', 'S'];
+            sentenca = '';
+            $('#sentenca').val('');
+            document.querySelectorAll('tr[id^="regra-"]').forEach(tr => {
+                tr.classList.remove('table-info');
+                tr.classList.remove('border-info');
+            });
+
+            document.querySelectorAll('tr[id^="regra-"] td').forEach(td => {
+                td.classList.remove('text-info-emphasis');
+            });
+
+            $('#regra-S').addClass('border-info table-info');
+            $('#regra-S td').addClass('text-info-emphasis');
         }
     </script>
 </body>
