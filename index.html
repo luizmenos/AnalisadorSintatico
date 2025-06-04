@@ -204,7 +204,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="card" id="validationCard">
                     <div class="card-header">
                         <h5 class="card-title">Validação</h5>
@@ -214,6 +214,20 @@
                             disabled>Direta</button>
                         <button type="button" class="btn btn-secondary" onclick="validacao('passo')" disabled>Passo a
                             Passo</button>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card" id="restartCard">
+                    <div class="card-header">
+                        <h5 class="card-title">Reínicio</h5>
+                    </div>
+                    <div class="card-body">
+
+                        <button type="button" class="btn btn-danger" onclick="location.reload()" disabled>Reiniciar
+                            Analisador</button>
+
                     </div>
                 </div>
             </div>
@@ -342,6 +356,7 @@
 
             $('#sentenca').val(sentencaValida);
             $('#validationCard button').attr('disabled', false);
+            $('#restartCard button').attr('disabled', false);
 
             let minhaSentenca = sentencaValida + '$';
             minhaSentenca = minhaSentenca.split("");
@@ -418,6 +433,10 @@
 
         proximoPasso = () => {
             let passo = historicoCopia.shift();
+            if (passo == undefined) {
+                Swal.fire('', 'Reinicie o Analisador ou insira uma nova sentença.', 'info');
+                return false;
+            }
             tabela.row.add([
                 passo.pilhaAntes.join(""),
                 passo.entrada.join(""),
@@ -520,6 +539,8 @@
             }
             historicoDefinitivo = historico;
             $('#validationCard button').attr('disabled', false);
+            $('#restartCard button').attr('disabled', false);
+
 
             if (historico[historico.length - 1].producao.includes('Erro')) {
                 // console.log('aqui');
@@ -571,9 +592,6 @@
                 pilha.push(simboloTopo);
                 return;
             }
-
-
-
 
             for (let i = producao.length - 1; i >= 0; i--) {
                 let simbolo = producao[i];
@@ -634,8 +652,8 @@
             $('#regra-S td').addClass('text-info-emphasis');
         }
 
-        // Tudo isso aqui embaixo só pra não deixar o Luiz colocar espaço em branco no campo, show de bola
-        
+        // Tudo isso aqui embaixo só pra não deixar o Luiz colocar espaço em branco, show de bola
+
         $(document).ready(function () {
             $('#sentenca').on('keydown', function (e) {
                 if (e.key === " " || e.code === "Space") {
@@ -652,6 +670,7 @@
                 $(this).val($(this).val().replace(/\s+/g, ''));
             });
         });
+
     </script>
 </body>
 
