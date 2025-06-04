@@ -633,6 +633,25 @@
             $('#regra-S').addClass('border-info table-info');
             $('#regra-S td').addClass('text-info-emphasis');
         }
+
+        // Tudo isso aqui embaixo só pra não deixar o Luiz colocar espaço em branco no campo, show de bola
+        
+        $(document).ready(function () {
+            $('#sentenca').on('keydown', function (e) {
+                if (e.key === " " || e.code === "Space") {
+                    e.preventDefault();
+                }
+            });
+            $('#sentenca').on('paste', function (e) {
+                e.preventDefault();
+                var texto = (e.originalEvent || e).clipboardData.getData('text');
+                texto = texto.replace(/\s+/g, '');
+                document.execCommand("insertText", false, texto);
+            });
+            $('#sentenca').on('blur', function () {
+                $(this).val($(this).val().replace(/\s+/g, ''));
+            });
+        });
     </script>
 </body>
 
