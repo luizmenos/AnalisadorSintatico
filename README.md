@@ -7,31 +7,31 @@
 
 ## Gramática Proposta
 
-**S**::= aAb | bBc | cCd
-**A**::= aDa | bAb
-**B**::= bCD | ε
-**C**::= cAB | aDb
-**D**::= dSa | cBd
+- **S**::= aAb | bBc | cCd
+- **A**::= aDa | bAb
+- **B**::= bCD | ε
+- **C**::= cAB | aDb
+- **D**::= dSa | cBd
 
 ---
 
 ## Conjuntos FIRST
 
-**S** = a, b, c
-**A** = a, b
-**B** = b, ε
-**C** = a, c
-**D** = c, d
+- **S** = a, b, c
+- **A** = a, b
+- **B** = b, ε
+- **C** = a, c
+- **D** = c, d
 
 ---
 
 ## Conjuntos FOLLOW
 
-**S** = $, a
-**A** = b, c, d
-**B** = c, d
-**C** = c, d
-**D** = a, b
+- **S** = $, a
+- **A** = b, c, d
+- **B** = c, d
+- **C** = c, d
+- **D** = a, b
 
 ---
 
