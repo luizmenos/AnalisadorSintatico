@@ -71,8 +71,8 @@ D = a, b
 4. **Após inserir a sentença (digitando):**
    - É necessário **clicar fora do campo de texto** para que o evento `onblur` do JavaScript seja acionado.  
    - Isso habilita os botões de validação:  
-     - **"Validação Direta"**  
-     - **"Validação Passo a Passo"**
+     - **"Direta"**  
+     - **"Passo a Passo"**
 
 5. **Sobre a Validação:**
    - Ao clicar em **"Direta"**, o analisador processa toda a sentença de uma vez.
