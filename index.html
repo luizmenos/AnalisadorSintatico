@@ -563,52 +563,83 @@
 
         desenvolveCaminho = (regra, producao, terminal) => {
 
-            const simboloTopo = pilha.pop();
+            let idxSimboloTopo = -1;
+            for (let i = pilha.length - 1; i >= 0; i--) {
+                if (parsing[pilha[i]]) {
+                    idxSimboloTopo = i;
+                    break;
+                }
+            }
 
-            console.log(typeof simboloTopo);
-            if (typeof simboloTopo === "undefined") {
-                Swal.fire('A sentença possui erros ou está completa', 'Você pode realizar a validação da mesma para verificar onde ocorreu o erro, ou resetar as derivações clicando em "Resetar Derivações"', "info");
+            if (idxSimboloTopo === -1) {
+                Swal.fire(
+                    'A sentença possui erros ou está completa',
+                    'Você pode validar ou resetar as derivações clicando em "Resetar Derivações"',
+                    "info"
+                );
                 return;
             }
 
-            if (simboloTopo == undefined || simboloTopo == '$') {
-                Swal.fire('', 'Clique em "Resetar Derivações" para poder derivar novamente', "info");
-                return;
-            }
+            const simboloTopo = pilha[idxSimboloTopo];
 
             if (simboloTopo !== regra) {
                 if (!parsing[simboloTopo] || !parsing[simboloTopo][terminal]) {
                     Swal.fire("Erro na derivação", `Não há produção válida para o topo da pilha '${simboloTopo}' com o terminal '${terminal}'. A sentença não pode ser mais derivada.`, 'error');
-                    pilha.push(simboloTopo);
-
-                    return;
-                }
-                if (typeof alfabeto[simboloTopo] !== "undefined") {
-                    Swal.fire("", `Erro: não é mais possível derivar, pois o topo da pilha é o terminal ${simboloTopo}`, "error");
-
+                } else if (alfabeto.includes(simboloTopo)) {
+                    Swal.fire("Erro", `O topo da pilha é o terminal '${simboloTopo}', mas foi tentada uma derivação de não terminal '${regra}'`, "error");
                 } else {
-                    Swal.fire("", `Aviso: topo da pilha é '${simboloTopo}', esperado '${regra}'`, "warning");
+                    Swal.fire("Aviso", `Topo da pilha é '${simboloTopo}', esperado '${regra}'`, "warning");
                 }
-                pilha.push(simboloTopo);
                 return;
             }
 
-            for (let i = producao.length - 1; i >= 0; i--) {
-                let simbolo = producao[i];
-                if (simbolo !== '') pilha.push(simbolo);
+            pilha.splice(idxSimboloTopo, 1);
+
+            if (producao !== '') {
+                for (let i = producao.length - 1; i >= 0; i--) {
+                    pilha.push(producao[i]);
+                }
             }
 
-            if (pilha.length && pilha[pilha.length - 1] === terminal) {
-                sentenca += terminal;
-                pilha.pop();
+            if (sentenca === '') {
+                sentenca += producao;
+            } else {
+                let simbolosSentenca = sentenca.split('');
+                let novaSentenca = [];
+                let substituiu = false;
+
+                for (let i = 0; i < simbolosSentenca.length; i++) {
+                    let simboloAtual = simbolosSentenca[i];
+
+                    if (!substituiu && simboloAtual === simboloTopo) {
+                        if (producao !== '') {
+                            novaSentenca.push(...producao.split(''));
+                        }
+                        substituiu = true;
+                    } else {
+                        novaSentenca.push(simboloAtual);
+                    }
+                }
+
+                sentenca = novaSentenca.join('');
+            }
+
+            let proximoSimbolo = null;
+            for (let k = pilha.length - 1; k >= 0; k--) {
+                if (parsing[pilha[k]]) {
+                    proximoSimbolo = pilha[k];
+                    break;
+                }
             }
 
             $('#restauraDeriv').removeAttr('disabled');
             atualizaTela();
-            destacarProximaRegra();
+            destacarProximaRegra(proximoSimbolo);
         }
 
-        destacarProximaRegra = () => {
+
+
+        destacarProximaRegra = (simbolo) => {
             document.querySelectorAll('tr[id^="regra-"]').forEach(tr => {
                 tr.classList.remove('table-info');
                 tr.classList.remove('border-info');
@@ -618,8 +649,11 @@
                 td.classList.remove('text-info-emphasis');
             });
 
-            const simbolo = pilha[pilha.length - 1];
-            if (typeof parsing[simbolo] !== 'undefined') {
+            if (!simbolo) {
+                simbolo = pilha[pilha.length - 1];
+            }
+
+            if (parsing[simbolo]) {
                 const linha = document.getElementById('regra-' + simbolo);
                 if (linha) {
                     linha.classList.add('table-info');
@@ -629,9 +663,7 @@
                     });
                 }
             }
-            return;
-
-        }
+        };
 
         restauraTabela = () => {
             $('#restauraDeriv').attr('disabled', true);
