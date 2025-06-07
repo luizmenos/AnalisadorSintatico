@@ -1,7 +1,7 @@
 # Analisador Sintático - Trabalho de Compiladores
 
 **Autores:** Luiz Augusto Dalla Rosa e Luiz Henrique Zucchi Menosso  
-**Data de Entrega:** 05/06/2025
+**Data de Entrega:** 06/06/2025
 
 ---
 
@@ -65,7 +65,6 @@
    - **Interagindo com a Tabela de Parsing**:  
      - É possível clicar nas **células azuis** da Tabela de Parsing exibida na página.  
      - A sentença será construída a partir das produções clicadas.  
-     - Essa forma **permite criar sentenças inválidas**.  
      - Para limpar a sentença gerada dessa forma, basta clicar no botão **"Resetar Derivações"** abaixo da Tabela de Parsing.
 
 4. **Após inserir a sentença (digitando):**
